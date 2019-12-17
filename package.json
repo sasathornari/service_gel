@@ -9,6 +9,7 @@
   "author": "Sasathorn",
   "license": "MIT",
   "dependencies": {
+    "@ionic-native/date-picker": "^5.18.0",
     "@types/cors": "^2.8.6",
     "@types/express": "^4.17.1",
     "@types/morgan": "^1.7.37",

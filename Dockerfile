@@ -1,7 +1,7 @@
 FROM node:12.5.0
 
 # Create app directory
-WORKDIR /usr/src/app
+WORKDIR /usr/src/services
 
 # Install app dependencies
 # A wildcard is used to ensure both package.json AND package-lock.json are copied
@@ -14,7 +14,7 @@ WORKDIR /usr/src/app
 
 RUN apt update && apt install git -y
 
-RUN git clone https://github.com/sasathornari/my3plus_v1.5.git /usr/src/app
+RUN git clone https://github.com/sasathornari/service_gel.git /usr/src/services
 
 RUN npm install
 

@@ -182,7 +182,7 @@ class ProjectController {
     try {
       const { id } = req.params;
       await pool3.query(
-        "select * from stplusc1_myapp.tma WHERE empId = '" + [id] + "'",
+        "select * from stplusc1_myapp.tma WHERE empId = '" + [id] + "' order by tmaId desc",
         function (err: any, row: any) {
           const listproject = JSON.parse(JSON.stringify(row, null, 4));
           console.log(listproject);
@@ -232,11 +232,33 @@ class ProjectController {
     }
   }
 
-  public async findCurrentTMAById(req: Request, res: Response): Promise<any> {
+  public async findCurrentInById(req: Request, res: Response): Promise<any> {
     try {
       const { id } = req.params;
       const { latDiff } = req.params;
       const { latAdd } = req.params;
+      const { datestamp } = req.params;
+
+      await pool3.query(
+        "select * from stplusc1_myapp.tma WHERE " +
+        "empId = '" + [id] + "' " +
+        "and latitude >= '" + [latDiff] + "' and latitude <= '" + [latAdd] + "' "+
+        "and type = 1 "+
+        "and datestamp = '" + [datestamp] + "' order by tmaId desc",
+        function (err: any, row: any) {
+          const listproject = JSON.parse(JSON.stringify(row, null, 4));
+          console.log(listproject);
+          res.json(listproject);
+        }
+      );
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  public async findCurrentOutById(req: Request, res: Response): Promise<any> {
+    try {
+      const { id } = req.params;
       const { lngDiff } = req.params;
       const { lngAdd } = req.params;
       const { datestamp } = req.params;
@@ -244,9 +266,31 @@ class ProjectController {
       await pool3.query(
         "select * from stplusc1_myapp.tma WHERE " +
         "empId = '" + [id] + "' " +
-        "and latitude >= '" + [latDiff] + "' and latitude <= '" + [latAdd] + "' "+
         "and longtitude >= '" + [lngDiff] + "' and longtitude <= '" + [lngAdd] + "' "+
+        "and type = 0 " +
         "and datestamp = '" + [datestamp] + "' order by tmaId desc",
+        function (err: any, row: any) {
+          const listproject = JSON.parse(JSON.stringify(row, null, 4));
+          console.log(listproject);
+          res.json(listproject);
+        }
+      );
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  public async searchTimeByDate(req: Request, res: Response): Promise<any> {
+    try {
+      const { id } = req.params;
+      const { startDate } = req.params;
+      const { finishDate } = req.params;
+
+      await pool3.query(
+        "select * from stplusc1_myapp.tma WHERE " +
+        "empId = '" + [id] + "' " +
+        "and datestamp >= '" + [startDate] + "' and datestamp <= '" + [finishDate] + "' "+
+        "order by tmaId desc",
         function (err: any, row: any) {
           const listproject = JSON.parse(JSON.stringify(row, null, 4));
           console.log(listproject);
@@ -261,14 +305,12 @@ class ProjectController {
   public async getLocationInProject(req: Request, res: Response): Promise<any> {
     try {
       const { lat } = req.params;
-      const { latAdd } = req.params;
       const { lng } = req.params;
-      const { lngAdd } = req.params;
       
       await pool3.query(
         "SELECT * FROM stplusc1_myapp.projects" +
-        " where latitude  >= " + [lat] + " and latitude <= "+ [latAdd] +
-        " and longitude >= " + [lng] + " and longitude <= " + [lngAdd] + 
+        " where latitude  >= " + [lat] + "-(radius_area/10000) and latitude <= "+ [lat] + "+(radius_area/10000)" +
+        " and longitude >= " + [lng] + "-(radius_area/10000) and longitude <= " + [lng] + "+(radius_area/10000)" +
         " and onProject = 1 ",
         function (err: any, row: any) {
           console.log(row);

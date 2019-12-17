@@ -22,6 +22,7 @@ class Server {
             'capacitor://localhost',
             'ionic://localhost',
             'http://localhost',
+            'http://localhost:8000',
             'http://localhost:8080',
             'http://localhost:8100',
             'http://localhost:53703',
@@ -29,6 +30,7 @@ class Server {
             'https://human.3stplus.co.th',
             'https://human.3stplus.co.th/login',
             'http://tma.gel.co.th',
+            'http://app.gel.co.th',
             '*'
         ];
         // Reflect the origin if it's in the allowed list or not defined (cURL, Postman, etc.)
