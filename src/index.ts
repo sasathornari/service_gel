@@ -45,7 +45,9 @@ class Server {
               }
             }
           }
-        
+
+          
+                  
         this.app.set('port', process.env.PORT || 3005);
         this.app.use(morgan('dev'));
         this.app.options('*', cors(corsOptions));
@@ -57,7 +59,7 @@ class Server {
         this.app.use(function(req, res, next) {
             res.setHeader("Access-Control-Allow-Origin", "*"); // update to match the domain you will make the request from
             res.setHeader('Access-Control-Allow-Methods', 'POST, GET, PUT, PATCH, DELETE, OPTIONS');
-            res.setHeader("Access-Control-Allow-Headers", "Content-Type");            
+            res.setHeader("Access-Control-Allow-Headers", 'X-Requested-With,Content-Type');            
             res.setHeader('Content-type', 'application/json');
             res.setHeader('Accept', 'application/json, text/plain');
             next();

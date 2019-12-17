@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import pool from "../connectGEL";
+
 //import pool3 from "../connectMySQL";
 
 class PortalController {
@@ -18,6 +19,18 @@ class PortalController {
     }
   }
 
+  public async createUserLogin(req: Request, res: Response): Promise<void> {
+    try {
+      const result = await pool.query("INSERT INTO my3plus.user_login set ?", [
+        req.body
+      ]);
+      console.log(result);
+      res.json({ message: "Create new user success = " + [req.body] });
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   public async fileUploads(req: Request, res: Response): Promise<void> {
     try {
       const result = await pool.query("INSERT INTO my3plus.fileupload set ?", [
@@ -25,6 +38,47 @@ class PortalController {
       ]);
       console.log(result);
       res.json({ message: "Post News Success = " + [req.body] });
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  public async getUserLoginById(req: Request, res: Response): Promise<any> {
+    try {
+      const { id } = req.params;
+      const { pass } = req.params;
+
+        await pool.query("SELECT * FROM my3plus.user_login where username = '" + [id] + "' and password = '" + [pass]+  "' ", function(err: any, row: any) {
+          const listproject = JSON.parse(JSON.stringify(row, null, 4));
+          res.json(listproject);
+        }
+      );
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  public async getUserProfile(req: Request, res: Response): Promise<any> {
+    try {
+      const { id } = req.params;
+
+        await pool.query("SELECT * FROM my3plus.user_login where username = '" + [id] + "' ", function(err: any, row: any) {
+          const listproject = JSON.parse(JSON.stringify(row, null, 4));
+          res.json(listproject);
+        }
+      );
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  public async getListUserLogin(req: Request, res: Response): Promise<any> {
+    try {
+        await pool.query("SELECT * FROM my3plus.user_login", function(err: any, row: any) {
+          const listproject = JSON.parse(JSON.stringify(row, null, 4));
+          res.json(listproject);
+        }
+      );
     } catch (error) {
       console.log(error);
     }

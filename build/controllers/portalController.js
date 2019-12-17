@@ -31,6 +31,20 @@ class PortalController {
             }
         });
     }
+    createUserLogin(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const result = yield connectGEL_1.default.query("INSERT INTO my3plus.user_login set ?", [
+                    req.body
+                ]);
+                console.log(result);
+                res.json({ message: "Create new user success = " + [req.body] });
+            }
+            catch (error) {
+                console.log(error);
+            }
+        });
+    }
     fileUploads(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
@@ -39,6 +53,48 @@ class PortalController {
                 ]);
                 console.log(result);
                 res.json({ message: "Post News Success = " + [req.body] });
+            }
+            catch (error) {
+                console.log(error);
+            }
+        });
+    }
+    getUserLoginById(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const { id } = req.params;
+                const { pass } = req.params;
+                yield connectGEL_1.default.query("SELECT * FROM my3plus.user_login where username = '" + [id] + "' and password = '" + [pass] + "' ", function (err, row) {
+                    const listproject = JSON.parse(JSON.stringify(row, null, 4));
+                    res.json(listproject);
+                });
+            }
+            catch (error) {
+                console.log(error);
+            }
+        });
+    }
+    getUserProfile(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const { id } = req.params;
+                yield connectGEL_1.default.query("SELECT * FROM my3plus.user_login where username = '" + [id] + "' ", function (err, row) {
+                    const listproject = JSON.parse(JSON.stringify(row, null, 4));
+                    res.json(listproject);
+                });
+            }
+            catch (error) {
+                console.log(error);
+            }
+        });
+    }
+    getListUserLogin(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                yield connectGEL_1.default.query("SELECT * FROM my3plus.user_login", function (err, row) {
+                    const listproject = JSON.parse(JSON.stringify(row, null, 4));
+                    res.json(listproject);
+                });
             }
             catch (error) {
                 console.log(error);
