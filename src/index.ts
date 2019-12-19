@@ -31,7 +31,7 @@ class Server {
             'https://human.3stplus.co.th',
             'https://human.3stplus.co.th/login',
             'http://tma.gel.co.th',
-            'http://app.gel.co.th',
+            'http://application.gel.co.th',
             '*'
           ];
           
