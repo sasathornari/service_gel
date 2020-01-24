@@ -107,7 +107,7 @@ class ProjectController {
         return __awaiter(this, void 0, void 0, function* () {
             yield connectMySQL_1.default.query("select * from stplusc1_myapp.projects where onProject = 1", function (err, row) {
                 const listproject = JSON.parse(JSON.stringify(row, null, 4));
-                console.log(listproject);
+                //console.log(listproject);
                 res.json(listproject);
             });
         });
@@ -117,7 +117,7 @@ class ProjectController {
             try {
                 const { id } = req.params;
                 yield connectMySQL_1.default.query("SELECT * FROM stplusc1_myapp.projects WHERE ProjId = '" + [id] + "'", function (err, row) {
-                    console.log(row);
+                    //console.log(row);
                     const listproject = JSON.parse(JSON.stringify(row, null, 4));
                     res.json(listproject);
                 });
@@ -132,7 +132,7 @@ class ProjectController {
             try {
                 const { id } = req.params;
                 yield connectMySQL_1.default.query("SELECT * FROM stplusc1_myapp.projects WHERE proId = '" + [id] + "'", function (err, row) {
-                    console.log(row);
+                    //console.log(row);
                     const listproject = JSON.parse(JSON.stringify(row, null, 4));
                     res.json(listproject);
                 });
@@ -146,7 +146,7 @@ class ProjectController {
         return __awaiter(this, void 0, void 0, function* () {
             yield connectMySQL_1.default.query("select * from stplusc1_myapp.projassign", function (err, row) {
                 const listproject = JSON.parse(JSON.stringify(row, null, 4));
-                console.log(listproject);
+                //console.log(listproject);
                 res.json(listproject);
             });
         });
@@ -156,7 +156,7 @@ class ProjectController {
             try {
                 const { id } = req.params;
                 yield connectMySQL_1.default.query("SELECT * FROM stplusc1_myapp.projassign WHERE PRS_NO = '" + [id] + "'", function (err, row) {
-                    console.log(row);
+                    //console.log(row);
                     const listproject = JSON.parse(JSON.stringify(row, null, 4));
                     res.json(listproject);
                 });
@@ -166,12 +166,84 @@ class ProjectController {
             }
         });
     }
-    getAllTimeAttendance(req, res) {
+    ceateProjects(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
-            yield connectMySQL_1.default.query("select * from stplusc1_myapp.tma", function (err, row) {
-                const listuser = JSON.parse(JSON.stringify(row, null, 4));
-                res.json(listuser);
-            });
+            try {
+                const result = yield connectMySQL_1.default.query("INSERT INTO stplusc1_myapp.projects set ?", [req.body]);
+                //console.log(result);
+                res.json({ message: "Create Project Success = " + [req.body] });
+            }
+            catch (error) {
+                console.log(error);
+            }
+        });
+    }
+    ceateProjectsAssign(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const result = yield connectMySQL_1.default.query("INSERT INTO stplusc1_myapp.projassign set ?", [req.body]);
+                //console.log(result);
+                res.json({
+                    message: "Assign Employee to Project Success = " + [req.body]
+                });
+            }
+            catch (error) {
+                console.log(error);
+            }
+        });
+    }
+    createUsers(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const result = yield connectMySQL_1.default.query("INSERT INTO stplusc1_myapp.user_login set ?", [req.body]);
+                //console.log(result);
+                res.json({ message: "Create user success = " + [req.body] });
+            }
+            catch (error) {
+                console.log(error);
+            }
+        });
+    }
+    createTimeAttendance(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const result = yield connectMySQL_1.default.query("INSERT INTO stplusc1_myapp.tma set ?", [
+                    req.body
+                ]);
+                //console.log(result);
+                res.json({ message: "Time Attendance Success = " + [req.body] });
+            }
+            catch (error) {
+                console.log(error);
+            }
+        });
+    }
+    getTimeAttendance(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                yield connectMySQL_1.default.query("select * from stplusc1_myapp.tma order by datestamp desc", function (err, row) {
+                    const timelist = JSON.parse(JSON.stringify(row, null, 4));
+                    res.json(timelist);
+                });
+            }
+            catch (error) {
+                console.log(error);
+            }
+        });
+    }
+    getListTime(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const { id } = req.params;
+                yield connectMySQL_1.default.query("select * from stplusc1_myapp.tma order by tmaId desc", function (err, row) {
+                    const listproject = JSON.parse(JSON.stringify(row, null, 4));
+                    console.log(listproject);
+                    res.json(listproject);
+                });
+            }
+            catch (error) {
+                console.log(error);
+            }
         });
     }
     getTimeByEmpId(req, res) {
@@ -180,7 +252,7 @@ class ProjectController {
                 const { id } = req.params;
                 yield connectMySQL_1.default.query("select * from stplusc1_myapp.tma WHERE empId = '" + [id] + "' order by tmaId desc", function (err, row) {
                     const listproject = JSON.parse(JSON.stringify(row, null, 4));
-                    console.log(listproject);
+                    //console.log(listproject);
                     res.json(listproject);
                 });
             }
@@ -195,7 +267,7 @@ class ProjectController {
                 const { id } = req.params;
                 yield connectMySQL_1.default.query("select * from stplusc1_myapp.tma WHERE ProjId = '" + [id] + "'", function (err, row) {
                     const listproject = JSON.parse(JSON.stringify(row, null, 4));
-                    console.log(listproject);
+                    //console.log(listproject);
                     res.json(listproject);
                 });
             }
@@ -204,41 +276,51 @@ class ProjectController {
             }
         });
     }
-    getTimeTodayById(req, res) {
+    findCurrentTMAById(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const { id } = req.params;
-                const { dateStart } = req.params;
-                const { dateFinish } = req.params;
-                yield connectMySQL_1.default.query("select * from stplusc1_myapp.tma WHERE " +
-                    "empId = '" + [id] + "' and " +
-                    "datestamp >='" + [dateStart] + "' and " +
-                    "datestamp <= '" + [dateFinish] + "' " +
-                    "order by tmaId desc", function (err, row) {
-                    const listproject = JSON.parse(JSON.stringify(row, null, 4));
-                    console.log(listproject);
-                    res.json(listproject);
-                });
-            }
-            catch (error) {
-                console.log(error);
-            }
-        });
-    }
-    findCurrentInById(req, res) {
-        return __awaiter(this, void 0, void 0, function* () {
-            try {
-                const { id } = req.params;
-                const { latDiff } = req.params;
-                const { latAdd } = req.params;
+                const { locate } = req.params;
                 const { datestamp } = req.params;
-                yield connectMySQL_1.default.query("select * from stplusc1_myapp.tma WHERE " +
-                    "empId = '" + [id] + "' " +
-                    "and latitude >= '" + [latDiff] + "' and latitude <= '" + [latAdd] + "' " +
-                    "and type = 1 " +
+                yield connectMySQL_1.default.query("select * from stplusc1_myapp.tma WHERE empId = '" + [id] + "' " +
+                    "and ProjId = '" + [locate] + "' and datestamp = '" + [datestamp] + "' ", function (err, row) {
+                    const listproject = JSON.parse(JSON.stringify(row, null, 4));
+                    //console.log(listproject);
+                    res.json(listproject);
+                });
+            }
+            catch (error) {
+                console.log(error);
+            }
+        });
+    }
+    findTransactionTime(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const { id } = req.params;
+                const { start } = req.params;
+                const { finish } = req.params;
+                yield connectMySQL_1.default.query("select * from stplusc1_myapp.tma WHERE empId = '" + [id] + "' " +
+                    "and datestamp between '" + [start] + "' and '" + [finish] + "' order by tmaId", function (err, row) {
+                    const listproject = JSON.parse(JSON.stringify(row, null, 4));
+                    //console.log(listproject);
+                    res.json(listproject);
+                });
+            }
+            catch (error) {
+                console.log(error);
+            }
+        });
+    }
+    findTimeTodayByEmpId(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const { id } = req.params;
+                const { datestamp } = req.params;
+                yield connectMySQL_1.default.query("select * from stplusc1_myapp.tma WHERE empId = '" + [id] + "' " +
                     "and datestamp = '" + [datestamp] + "' order by tmaId desc", function (err, row) {
                     const listproject = JSON.parse(JSON.stringify(row, null, 4));
-                    console.log(listproject);
+                    //console.log(listproject);
                     res.json(listproject);
                 });
             }
@@ -247,40 +329,13 @@ class ProjectController {
             }
         });
     }
-    findCurrentOutById(req, res) {
+    findTMAByProjectName(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const { id } = req.params;
-                const { lngDiff } = req.params;
-                const { lngAdd } = req.params;
-                const { datestamp } = req.params;
-                yield connectMySQL_1.default.query("select * from stplusc1_myapp.tma WHERE " +
-                    "empId = '" + [id] + "' " +
-                    "and longtitude >= '" + [lngDiff] + "' and longtitude <= '" + [lngAdd] + "' " +
-                    "and type = 0 " +
-                    "and datestamp = '" + [datestamp] + "' order by tmaId desc", function (err, row) {
+                const { name } = req.params;
+                yield connectMySQL_1.default.query("select * from stplusc1_myapp.tma WHERE location_name = '" + [name] + "' ", function (err, row) {
                     const listproject = JSON.parse(JSON.stringify(row, null, 4));
-                    console.log(listproject);
-                    res.json(listproject);
-                });
-            }
-            catch (error) {
-                console.log(error);
-            }
-        });
-    }
-    searchTimeByDate(req, res) {
-        return __awaiter(this, void 0, void 0, function* () {
-            try {
-                const { id } = req.params;
-                const { startDate } = req.params;
-                const { finishDate } = req.params;
-                yield connectMySQL_1.default.query("select * from stplusc1_myapp.tma WHERE " +
-                    "empId = '" + [id] + "' " +
-                    "and datestamp >= '" + [startDate] + "' and datestamp <= '" + [finishDate] + "' " +
-                    "order by tmaId desc", function (err, row) {
-                    const listproject = JSON.parse(JSON.stringify(row, null, 4));
-                    console.log(listproject);
+                    //console.log(listproject);
                     res.json(listproject);
                 });
             }
@@ -293,68 +348,18 @@ class ProjectController {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const { lat } = req.params;
+                const { latAdd } = req.params;
                 const { lng } = req.params;
+                const { lngAdd } = req.params;
                 yield connectMySQL_1.default.query("SELECT * FROM stplusc1_myapp.projects" +
-                    " where latitude  >= " + [lat] + "-(radius_area/10000) and latitude <= " + [lat] + "+(radius_area/10000)" +
-                    " and longitude >= " + [lng] + "-(radius_area/10000) and longitude <= " + [lng] + "+(radius_area/10000)" +
+                    " where latitude  >= " + [lat] + " and latitude <= " + [latAdd] +
+                    " and longitude >= " + [lng] + " and longitude <= " + [lngAdd] +
                     " and onProject = 1 ", function (err, row) {
-                    console.log(row);
+                    //console.log(row);
                     const listproject = JSON.parse(JSON.stringify(row, null, 4));
-                    console.log(listproject);
+                    //console.log(listproject);
                     res.json(listproject);
                 });
-            }
-            catch (error) {
-                console.log(error);
-            }
-        });
-    }
-    ceateProjects(req, res) {
-        return __awaiter(this, void 0, void 0, function* () {
-            try {
-                const result = yield connectMySQL_1.default.query("INSERT INTO stplusc1_myapp.projects set ?", [req.body]);
-                console.log(result);
-                res.json({ message: "Create Project Success = " + [req.body] });
-            }
-            catch (error) {
-                console.log(error);
-            }
-        });
-    }
-    ceateProjectsAssign(req, res) {
-        return __awaiter(this, void 0, void 0, function* () {
-            try {
-                const result = yield connectMySQL_1.default.query("INSERT INTO stplusc1_myapp.projassign set ?", [req.body]);
-                console.log(result);
-                res.json({
-                    message: "Assign Employee to Project Success = " + [req.body]
-                });
-            }
-            catch (error) {
-                console.log(error);
-            }
-        });
-    }
-    createUsers(req, res) {
-        return __awaiter(this, void 0, void 0, function* () {
-            try {
-                const result = yield connectMySQL_1.default.query("INSERT INTO stplusc1_myapp.user_login set ?", [req.body]);
-                console.log(result);
-                res.json({ message: "Create user success = " + [req.body] });
-            }
-            catch (error) {
-                console.log(error);
-            }
-        });
-    }
-    createTimeAttendance(req, res) {
-        return __awaiter(this, void 0, void 0, function* () {
-            try {
-                const result = yield connectMySQL_1.default.query("INSERT INTO stplusc1_myapp.tma set ?", [
-                    req.body
-                ]);
-                console.log(result);
-                res.json({ message: "Time Attendance Success = " + [req.body] });
             }
             catch (error) {
                 console.log(error);
@@ -367,7 +372,7 @@ class ProjectController {
                 const { id } = req.params;
                 yield connectMySQL_1.default.query("delete from stplusc1_myapp.user_login where Id =" + [id], function (err, row) {
                     const listproject = JSON.parse(JSON.stringify(row, null, 4));
-                    console.log(listproject);
+                    //console.log(listproject);
                     res.json(listproject);
                 });
             }
@@ -382,22 +387,7 @@ class ProjectController {
                 const { id } = req.params;
                 yield connectMySQL_1.default.query("delete from stplusc1_myapp.projassign where assignId =" + [id], function (err, row) {
                     const listproject = JSON.parse(JSON.stringify(row, null, 4));
-                    console.log(listproject);
-                    res.json(listproject);
-                });
-            }
-            catch (error) {
-                console.log(error);
-            }
-        });
-    }
-    deleteProjectById(req, res) {
-        return __awaiter(this, void 0, void 0, function* () {
-            try {
-                const { id } = req.params;
-                yield connectMySQL_1.default.query("delete from stplusc1_myapp.projects where proId =" + [id], function (err, row) {
-                    const listproject = JSON.parse(JSON.stringify(row, null, 4));
-                    console.log(listproject);
+                    //console.log(listproject);
                     res.json(listproject);
                 });
             }
@@ -416,7 +406,7 @@ class ProjectController {
                 //   "UPDATE stplusc1_myapp.projects set ? ",
                 //   [req.body] + " WHERE ProjId = '" + [id] + "' "
                 // );
-                console.log(result);
+                //console.log(result);
                 res.json({ message: "update Project Success = " + result });
             }
             catch (error) {
@@ -424,7 +414,6 @@ class ProjectController {
             }
         });
     }
-    // Update Project APP on Mobile (success)
     updateProjectApp(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             const { id } = req.params;
@@ -434,9 +423,9 @@ class ProjectController {
                 //   [req.body] + " WHERE proId = '" + [id] + "' "
                 // );
                 const sql = "update stplusc1_myapp.projects set ? where proId = ? ";
-                console.log(sql);
+                //console.log(sql);
                 const result = yield connectMySQL_1.default.query(sql, [req.body, id]);
-                console.log(result);
+                //console.log(result);
                 res.json({ message: "update Project Success = " + [req.body] + ' , ' + [id] });
             }
             catch (error) {
@@ -449,7 +438,7 @@ class ProjectController {
             const { id } = req.params;
             try {
                 const result = yield connectMySQL_1.default.query("UPDATE stplusc1_myapp.user_login set ? ", [req.body] + " WHERE PRS_NO = '" + [id] + "' ");
-                console.log(result);
+                //console.log(result);
                 res.json({ message: "update Project Success = " + [req.body] });
             }
             catch (error) {
@@ -462,17 +451,16 @@ class ProjectController {
             const { id } = req.params;
             try {
                 const result = yield connectMySQL_1.default.query("UPDATE stplusc1_myapp.tma set " +
-                    "check = '" + [req.body.check] + "', " +
-                    "ProjId = '" + [req.body.ProjId] + "', " +
-                    "datestamp = '" + [req.body.datestamp] + "', " +
-                    "timestamp = '" + [req.body.timestamp] + "', " +
-                    "latitude = '" + [req.body.latitude] + "', " +
-                    "longtitude = '" + [req.body.longtitude] + "', " +
+                    "ProjId_out = '" + [req.body.ProjId_out] + "', " +
+                    "dateOut = '" + [req.body.dateOut] + "', " +
+                    "time_out = '" + [req.body.time_out] + "', " +
+                    "latitude_out = '" + [req.body.latitude_out] + "', " +
+                    "longtitude_out = '" + [req.body.longtitude_out] + "', " +
                     "userUpdated ='" + [req.body.userUpdated] + "', " +
                     "dateUpdated = '" + [req.body.dateUpdated] + "' " +
                     "WHERE empId = '" + [id] + "' ");
-                console.log(result);
-                res.json({ message: "update Project Success = " + [req.body.timetstamp] });
+                //console.log(result);
+                res.json({ message: "update Project Success = " + [req.body.time_out] });
             }
             catch (error) {
                 console.log(error);
@@ -483,10 +471,9 @@ class ProjectController {
         return __awaiter(this, void 0, void 0, function* () {
             const { id } = req.params;
             try {
-                const sql = "update stplusc1_myapp.projassign set ? where proId = ?";
-                const result = yield connectMySQL_1.default.query(sql, [req.body, id]);
-                console.log(result);
-                res.json({ message: "update assign employee to project success = " + +[req.body] + ' , ' + [id] });
+                const result = yield connectMySQL_1.default.query("UPDATE stplusc1_myapp.projassign set ? ", [req.body] + "WHERE proId = '" + [id] + "' ");
+                //console.log(result);
+                res.json({ message: "update Project Success = " + [req.body] });
             }
             catch (error) {
                 console.log(error);

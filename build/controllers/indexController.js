@@ -28,15 +28,19 @@ class IndexController {
     }
     listAllEmployees(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
-            yield connectBPlus_1.default.query("select PRS_NO,EMP_I_CARD,EMP_INTL,EMP_NAME,EMP_SURNME,EMP_GENDER," +
-                "EMP_MARITAL,EMP_BIRTH,PRS_JBT,JBT_THAIDESC,PRS_DEPT,DEPT_THAIDESC " +
+            yield connectBPlus_1.default.query("select EMP_KEY,PRS_NO,PRS_GRADE,[DESCRIPTION],EMP_I_CARD,EMP_INTL,EMP_NAME,EMP_SURNME,EMP_GENDER," +
+                "EMP_MARITAL,EMP_BIRTH,PRS_JBT,JBT_THAIDESC,PRS_DEPT,DEPT_THAIDESC,WBP_EMAIL " +
                 "from GEL.dbo.PERSONALINFO " +
                 "inner join GEL.dbo.EMPFILE on EMP_KEY = PRS_EMP " +
                 "inner join GEL.dbo.JOBTITLE on PRS_JBT = JBT_KEY " +
                 "inner join GEL.dbo.DEPTTAB on PRS_DEPT = DEPT_KEY " +
-                "order by PRS_NO", function (err, row, fields) {
+                "inner join GEL.dbo.PAYROLLINFO on PRI_EMP = PRS_EMP " +
+                "inner join GEL.dbo.GEL_Master on CODE = PRS_GRADE " +
+                "left join GEL.dbo.WEBUSERPROFILE on  WBP_EMP = EMP_KEY " +
+                "where PRI_STATUS <> 2 " +
+                "ORDER BY EMP_KEY", function (err, row, fields) {
                 const listproject = JSON.parse(JSON.stringify(row, null, 4));
-                console.log(row.recordsets[0]);
+                //console.log(row.recordsets[0]);
                 res.json(row.recordsets[0]);
             });
         });
@@ -44,16 +48,19 @@ class IndexController {
     getEmpByDept(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             const { id } = req.params;
-            yield connectBPlus_1.default.query("select PRS_NO,EMP_I_CARD,EMP_INTL,EMP_NAME,EMP_SURNME,EMP_GENDER," +
-                "EMP_MARITAL,EMP_BIRTH,PRS_JBT,JBT_THAIDESC,PRS_DEPT,DEPT_THAIDESC " +
+            yield connectBPlus_1.default.query("select  EMP_KEY,PRS_NO,PRS_GRADE,[DESCRIPTION],EMP_I_CARD,EMP_INTL,EMP_NAME,EMP_SURNME,EMP_GENDER," +
+                "EMP_MARITAL,EMP_BIRTH,PRS_JBT,JBT_THAIDESC,PRS_DEPT,DEPT_THAIDESC,WBP_EMAIL " +
                 "from GEL.dbo.PERSONALINFO " +
                 "inner join GEL.dbo.EMPFILE on EMP_KEY = PRS_EMP " +
                 "inner join GEL.dbo.JOBTITLE on PRS_JBT = JBT_KEY " +
                 "inner join GEL.dbo.DEPTTAB on PRS_DEPT = DEPT_KEY " +
+                "inner join GEL.dbo.PAYROLLINFO on PRI_EMP = PRS_EMP " +
+                "inner join GEL.dbo.GEL_Master on CODE = PRS_GRADE " +
+                "left join GEL.dbo.WEBUSERPROFILE on  WBP_EMP = EMP_KEY " +
                 "where DEPT_KEY = " + [id] +
-                " order by PRS_NO", function (err, row, fields) {
+                " order by EMP_KEY", function (err, row, fields) {
                 const listproject = JSON.parse(JSON.stringify(row, null, 4));
-                console.log(row.recordsets[0]);
+                //console.log(row.recordsets[0]);
                 res.json(row.recordsets[0]);
             });
         });
@@ -62,15 +69,17 @@ class IndexController {
         return __awaiter(this, void 0, void 0, function* () {
             const { id } = req.params;
             try {
-                const result = yield connectBPlus_1.default.query("select PRS_NO,EMP_I_CARD,EMP_INTL,EMP_NAME,EMP_SURNME,EMP_GENDER," +
-                    "EMP_MARITAL,EMP_BIRTH,PRS_JBT,JBT_THAIDESC,PRS_DEPT,DEPT_THAIDESC " +
+                const result = yield connectBPlus_1.default.query("select EMP_KEY,PRS_NO,PRS_GRADE,[DESCRIPTION],EMP_I_CARD,EMP_INTL,EMP_NAME,EMP_SURNME,EMP_GENDER," +
+                    "EMP_MARITAL,EMP_BIRTH,EMP_ADDR_1,EMP_ADDR_2,EMP_ADDR_3,PRS_JBT,JBT_THAIDESC,PRS_DEPT,DEPT_THAIDESC,WBP_EMAIL " +
                     "from GEL.dbo.PERSONALINFO " +
                     "inner join GEL.dbo.EMPFILE on EMP_KEY = PRS_EMP " +
                     "inner join GEL.dbo.JOBTITLE on PRS_JBT = JBT_KEY " +
                     "inner join GEL.dbo.DEPTTAB on PRS_DEPT = DEPT_KEY " +
-                    "where PRS_NO = " +
-                    [id]);
-                console.log(result);
+                    "inner join GEL.dbo.PAYROLLINFO on PRI_EMP = PRS_EMP " +
+                    "inner join GEL.dbo.GEL_Master on CODE = PRS_GRADE " +
+                    "left join GEL.dbo.WEBUSERPROFILE on  WBP_EMP = EMP_KEY " +
+                    "where PRI_STATUS <> 2 and PRS_NO = " + [id]);
+                //console.log(result);
                 res.json(result.recordsets[0]);
             }
             catch (error) {
@@ -82,7 +91,7 @@ class IndexController {
         return __awaiter(this, void 0, void 0, function* () {
             yield connectBPlus_1.default.query("select * from GEL.dbo.DEPTTAB", function (err, row) {
                 const listproject = JSON.parse(JSON.stringify(row, null, 4));
-                console.log(row.recordsets[0]);
+                //console.log(row.recordsets[0]);
                 res.json(row.recordsets[0]);
             });
         });
@@ -92,7 +101,7 @@ class IndexController {
             const { id } = req.params;
             yield connectBPlus_1.default.query("select * from GEL.dbo.DEPTTAB where DEPT_KEY=" + [id], function (err, row) {
                 const listproject = JSON.parse(JSON.stringify(row, null, 4));
-                console.log(row.recordsets[0]);
+                //console.log(row.recordsets[0]);
                 res.json(row.recordsets[0]);
             });
         });
@@ -102,22 +111,52 @@ class IndexController {
             const { id } = req.params;
             const { pass } = req.params;
             try {
-                const result = yield connectBPlus_1.default.query("select PRS_NO,EMP_I_CARD,EMP_INTL,EMP_NAME,EMP_SURNME,EMP_GENDER," +
-                    "EMP_MARITAL,EMP_BIRTH,PRS_JBT,JBT_THAIDESC,PRS_DEPT,DEPT_THAIDESC, " +
+                const result = yield connectBPlus_1.default.query("select EMP_KEY,PRS_NO,PRS_GRADE,[DESCRIPTION],EMP_I_CARD,EMP_INTL,EMP_NAME,EMP_SURNME,EMP_GENDER," +
+                    "EMP_MARITAL,EMP_BIRTH,PRS_JBT,JBT_THAIDESC,PRS_DEPT,DEPT_THAIDESC,WBP_EMAIL, " +
                     "EMP_I_CARD as username, PRS_NO as password " +
                     "from GEL.dbo.PERSONALINFO " +
                     "inner join GEL.dbo.EMPFILE on EMP_KEY = PRS_EMP " +
                     "inner join GEL.dbo.JOBTITLE on PRS_JBT = JBT_KEY " +
                     "inner join GEL.dbo.DEPTTAB on PRS_DEPT = DEPT_KEY " +
-                    "where EMP_BIRTH = '" + [id] + "' " +
-                    "and PRS_NO = '" + [pass] + "' ");
-                console.log(result);
-                res.setHeader('Content-type', 'application/json');
+                    "inner join GEL.dbo.PAYROLLINFO on PRI_EMP = PRS_EMP " +
+                    "inner join GEL.dbo.GEL_Master on CODE = PRS_GRADE " +
+                    "left join GEL.dbo.WEBUSERPROFILE on  WBP_EMP = EMP_KEY " +
+                    "where EMP_I_CARD = " +
+                    [id] +
+                    " and PRS_NO = " +
+                    [pass]);
+                //console.log(result);
+                res.setHeader('Content-Type', 'application/json');
                 res.json(result.recordsets[0]);
                 //res.status(404).json({ text: "Username doesn't exits" });
             }
             catch (error) {
-                res.json({ message: 'Not Found Data' });
+                console.log(error);
+            }
+        });
+    }
+    getUsernameApp(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const { id } = req.params;
+            const { pass } = req.params;
+            try {
+                const result = yield connectBPlus_1.default.query("select EMP_KEY,PRS_NO,PRS_GRADE,[DESCRIPTION],EMP_I_CARD,EMP_INTL,EMP_NAME,EMP_SURNME,EMP_GENDER," +
+                    "EMP_MARITAL,EMP_BIRTH,PRS_JBT,JBT_THAIDESC,PRS_DEPT,DEPT_THAIDESC,WBP_EMAIL, " +
+                    "EMP_I_CARD as username, PRS_NO as password " +
+                    "from GEL.dbo.PERSONALINFO " +
+                    "inner join GEL.dbo.EMPFILE on EMP_KEY = PRS_EMP " +
+                    "inner join GEL.dbo.JOBTITLE on PRS_JBT = JBT_KEY " +
+                    "inner join GEL.dbo.DEPTTAB on PRS_DEPT = DEPT_KEY " +
+                    "inner join GEL.dbo.PAYROLLINFO on PRI_EMP = PRS_EMP " +
+                    "inner join GEL.dbo.GEL_Master on CODE = PRS_GRADE " +
+                    "left join GEL.dbo.WEBUSERPROFILE on  WBP_EMP = EMP_KEY " +
+                    "where EMP_BIRTH = '" + [id] + "' and PRS_NO = '" + [pass] + "' ");
+                //console.log(result);
+                res.setHeader('Content-Type', 'application/json');
+                res.json(result.recordsets[0]);
+                //res.status(404).json({ text: "Username doesn't exits" });
+            }
+            catch (error) {
                 console.log(error);
             }
         });
@@ -126,15 +165,18 @@ class IndexController {
         return __awaiter(this, void 0, void 0, function* () {
             const { id } = req.params;
             try {
-                const result = yield connectBPlus_1.default.query("select EMP_KEY,PRS_NO,EMP_I_CARD,EMP_INTL,EMP_NAME,EMP_SURNME,EMP_GENDER," +
-                    "EMP_MARITAL,EMP_BIRTH,PRS_JBT,JBT_THAIDESC,PRS_DEPT,DEPT_THAIDESC, " +
-                    "EMP_ADDR_1,EMP_ADDR_2,EMP_ADDR_3 " +
+                const result = yield connectBPlus_1.default.query("select EMP_KEY,PRS_NO,PRS_GRADE,[DESCRIPTION],EMP_I_CARD,EMP_INTL,EMP_NAME,EMP_SURNME,EMP_GENDER," +
+                    "EMP_MARITAL,EMP_BIRTH,PRS_JBT,JBT_THAIDESC,PRS_DEPT,DEPT_THAIDESC,WBP_EMAIL " +
                     "from GEL.dbo.PERSONALINFO " +
                     "inner join GEL.dbo.EMPFILE on EMP_KEY = PRS_EMP " +
                     "inner join GEL.dbo.JOBTITLE on PRS_JBT = JBT_KEY " +
                     "inner join GEL.dbo.DEPTTAB on PRS_DEPT = DEPT_KEY " +
-                    "where PRS_NO = '" + [id] + "' ");
-                console.log(result);
+                    "inner join GEL.dbo.PAYROLLINFO on PRI_EMP = PRS_EMP " +
+                    "inner join GEL.dbo.GEL_Master on CODE = PRS_GRADE " +
+                    "left join GEL.dbo.WEBUSERPROFILE on  WBP_EMP = EMP_KEY " +
+                    "where PRS_NO = " +
+                    [id]);
+                //console.log(result);
                 res.json(result.recordsets[0]);
                 //res.status(404).json({ text: "Username doesn't exits" });
             }
@@ -168,7 +210,7 @@ class IndexController {
                     "DLVNAME,Status from ProjTable where PARENTID =' ' and ProjId = '" +
                     [id] +
                     "'");
-                console.log(result);
+                //console.log(result);
                 res.json(result.recordsets[0]);
             }
             catch (error) {
@@ -184,7 +226,7 @@ class IndexController {
                     "DLVNAME,Status from ProjTable where PARENTID =' ' and PROJGROUPID = '" +
                     [group] +
                     "'");
-                console.log(result);
+                //console.log(result);
                 res.json(result.recordsets[0]);
             }
             catch (error) {
@@ -196,7 +238,7 @@ class IndexController {
         return __awaiter(this, void 0, void 0, function* () {
             yield connectAX_1.default.query("SELECT distinct PROJGROUPID FROM ProjTable where PARENTID =' '", function (err, row) {
                 const listproject = JSON.parse(JSON.stringify(row, null, 4));
-                console.log(row.recordsets[0]);
+                //console.log(row.recordsets[0]);
                 res.json(row.recordsets[0]);
             });
         });

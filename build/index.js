@@ -22,16 +22,14 @@ class Server {
             'capacitor://localhost',
             'ionic://localhost',
             'http://localhost',
-            'http://localhost:8000',
             'http://localhost:8080',
             'http://localhost:8100',
+            'http://localhost:8000',
             'http://localhost:53703',
             'http://localhost:4200',
             'https://human.3stplus.co.th',
-            'https://human.3stplus.co.th/login',
-            'http://tma.gel.co.th',
-            'http://app.gel.co.th',
-            '*'
+            'https://tma.gel.co.th/#',
+            'https://application.gel.co.th'
         ];
         // Reflect the origin if it's in the allowed list or not defined (cURL, Postman, etc.)
         const corsOptions = {
@@ -55,7 +53,7 @@ class Server {
         this.app.use(function (req, res, next) {
             res.setHeader("Access-Control-Allow-Origin", "*"); // update to match the domain you will make the request from
             res.setHeader('Access-Control-Allow-Methods', 'POST, GET, PUT, PATCH, DELETE, OPTIONS');
-            res.setHeader("Access-Control-Allow-Headers", 'X-Requested-With,Content-Type');
+            res.setHeader("Access-Control-Allow-Headers", "Content-Type");
             res.setHeader('Content-type', 'application/json');
             res.setHeader('Accept', 'application/json, text/plain');
             next();

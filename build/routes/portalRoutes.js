@@ -5,56 +5,38 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = require("express");
 const portalController_1 = __importDefault(require("../controllers/portalController"));
-const multer_1 = __importDefault(require("multer"));
-const path_1 = __importDefault(require("path"));
 class PortalRoutes {
     constructor() {
         this.router = express_1.Router();
         this.config();
     }
     config() {
-        const DIR = './uploads';
-        console.log(DIR);
-        let storage = multer_1.default.diskStorage({
-            destination: (req, file, cb) => {
-                cb(null, DIR);
-            },
-            filename: (req, file, cb) => {
-                cb(null, file.fieldname + '-' + Date.now() + '.' + path_1.default.extname(file.originalname));
-            }
-        });
-        let upload = multer_1.default({ storage: storage });
-        console.log(upload);
         // CREATE DATA 
-        this.router.post('/create/user', portalController_1.default.createUserLogin);
         this.router.post('/post-create', portalController_1.default.createNewPost);
-        // UPLOAD IMAGES
-        this.router.post('/upload', upload.single('image'), function (req, res) {
-            if (!req.file) {
-                console.log("No file is available!");
-                return res.send({
-                    success: false
-                });
-            }
-            else {
-                console.log('File is available!');
-                return res.send({
-                    success: true
-                });
-            }
-        });
-        // READ DATA PORTAL INTRANET OF GEL
-        this.router.get('/users/:id,:pass', portalController_1.default.getUserLoginById);
-        this.router.get('/userprofile/:id', portalController_1.default.getUserProfile);
-        this.router.get('/list/user', portalController_1.default.getListUserLogin);
+        //this.router.post('/fileupload', portalController.fileUploads);
+        this.router.post('/web/user', portalController_1.default.createUserWeb);
+        this.router.post('/project/create', portalController_1.default.ceateProjects);
+        this.router.post('/tma', portalController_1.default.createTimeAttendance);
+        // READ DATA PORTAL INTRANET OF GEL        
+        this.router.get('/web/listuser', portalController_1.default.getListUserWeb);
+        this.router.get('/web/role/:role', portalController_1.default.getUserLoginByRole);
+        this.router.get('/web/user/:id,:pass', portalController_1.default.findUserLogin);
+        this.router.get('/web/username/:id', portalController_1.default.findByUsername);
+        this.router.get('/web/userlogin/:id', portalController_1.default.findUserById);
         this.router.get('/cate', portalController_1.default.getPostCategory);
         this.router.get('/post', portalController_1.default.getAllPost);
         this.router.get('/post/:id', portalController_1.default.getPostById);
         this.router.get('/post/cate/:id', portalController_1.default.getPostByCategory);
+        this.router.get('/projects', portalController_1.default.getProjects);
+        this.router.get('/project/proId/:id', portalController_1.default.getProjectById);
+        this.router.get('/project/history/:id,:locate,:datestamp', portalController_1.default.findHistoryTMAById);
+        this.router.get('/project/location/:lat,:lng', portalController_1.default.getLocationInProject);
         // UPDATE DATA
-        this.router.put('/post-update/:id', portalController_1.default.updatPost);
+        this.router.put('/post-update/:id', portalController_1.default.updatePost);
+        this.router.put('/project/app/:id', portalController_1.default.updateProjectInApp);
         // DELETE DATA
         this.router.delete('/post/:id', portalController_1.default.deletePost);
+        this.router.delete('/project/del/:id', portalController_1.default.deleteProjectById);
     }
 }
 const portalRoutes = new PortalRoutes();

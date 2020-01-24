@@ -17,7 +17,7 @@ class UploadController {
     }
     saveImageUpload(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
-            console.log([req.body]);
+            //console.log([req.body]);
             res.json({ message: [req.body] });
         });
     }

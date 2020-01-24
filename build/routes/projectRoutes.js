@@ -23,14 +23,15 @@ class ProjectRoutes {
         this.router.get('/proId/:id', projectController_1.default.getProjectsById);
         this.router.get('/assign/list', projectController_1.default.getProjectsAssign);
         this.router.get('/assign/:id', projectController_1.default.getProjectsAssignById);
-        this.router.get('/list/tma', projectController_1.default.getAllTimeAttendance);
+        this.router.get('/tma/list', projectController_1.default.getListTime);
         this.router.get('/tma/emp/:id', projectController_1.default.getTimeByEmpId);
         this.router.get('/tma/pro/:id', projectController_1.default.getTimeByProjId);
-        this.router.get('/tma/today/:id,:dateStart,:dateFinish', projectController_1.default.getTimeTodayById);
-        this.router.get('/currentIn/:id,:latDiff,:latAdd,:datestamp', projectController_1.default.findCurrentInById);
-        this.router.get('/currentOut/:id,:lngDiff,:lngAdd,:datestamp', projectController_1.default.findCurrentOutById);
-        this.router.get('/searchTime/:id,:startDate,:finishDate', projectController_1.default.searchTimeByDate);
-        this.router.get('/location/:lat,:lng', projectController_1.default.getLocationInProject);
+        this.router.get('/currentTMA/:id,:locate,:datestamp', projectController_1.default.findCurrentTMAById);
+        this.router.get('/logs/time/:id,:start,:finish', projectController_1.default.findTransactionTime);
+        this.router.get('/tma/last/:id,:datestamp', projectController_1.default.findTimeTodayByEmpId);
+        this.router.get('/tma/log/proname/:name', projectController_1.default.findTMAByProjectName);
+        // BACKEND CREATE DATA OF WEBSITE
+        this.router.get('/location/:lat,:latAdd,:lng,:lngAdd', projectController_1.default.getLocationInProject);
         this.router.post('/create', projectController_1.default.ceateProjects);
         this.router.post('/assign', projectController_1.default.ceateProjectsAssign);
         this.router.post('/tma', projectController_1.default.createTimeAttendance);
@@ -41,7 +42,6 @@ class ProjectRoutes {
         this.router.put('/user/:id', projectController_1.default.updateUserLogin);
         this.router.delete('/user/:id', projectController_1.default.deleteUserLoginById);
         this.router.delete('/:id', projectController_1.default.deleteAssgingById);
-        this.router.delete('/app/:id', projectController_1.default.deleteProjectById);
     }
 }
 const projectRoutes = new ProjectRoutes();
