@@ -7,7 +7,7 @@ WORKDIR /usr/src/services
 # A wildcard is used to ensure both package.json AND package-lock.json are copied
 # where available (npm@5+)
 #COPY package*.json ./
-
+COPY ./package.json ./package.json
 
 # If you are building your code for production
 # RUN npm ci --only=production
@@ -27,4 +27,4 @@ RUN npm install pm2 -g
 
 EXPOSE 3005
 #CMD [ "node", "build/index.js" ]
-CMD ["pm2-runtime", "build/index.js"]
+CMD ["pm2", "build/index.js"]
