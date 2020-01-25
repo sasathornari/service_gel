@@ -6,6 +6,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const morgan_1 = __importDefault(require("morgan"));
 const cors_1 = __importDefault(require("cors"));
+const https_1 = __importDefault(require("https"));
+const fs_1 = __importDefault(require("fs"));
 const body_parser_1 = __importDefault(require("body-parser"));
 const indexRoutes_1 = __importDefault(require("./routes/indexRoutes"));
 const portalRoutes_1 = __importDefault(require("./routes/portalRoutes"));
@@ -28,7 +30,7 @@ class Server {
             'http://localhost:53703',
             'http://localhost:4200',
             'https://human.3stplus.co.th',
-            'https://tma.gel.co.th/#',
+            'https://tma.gel.co.th',
             'https://application.gel.co.th'
         ];
         // Reflect the origin if it's in the allowed list or not defined (cURL, Postman, etc.)
@@ -42,6 +44,13 @@ class Server {
                 }
             }
         };
+        // Set SSL
+        const path = require('path');
+        const options = {
+            key: fs_1.default.readFileSync(path.resolve('./server.key')),
+            cert: fs_1.default.readFileSync(path.resolve('./server.cert'))
+        };
+        https_1.default.createServer(options, this.app);
         this.app.set('port', process.env.PORT || 3005);
         this.app.use(morgan_1.default('dev'));
         this.app.options('*', cors_1.default(corsOptions));
