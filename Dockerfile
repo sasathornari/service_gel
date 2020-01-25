@@ -14,7 +14,7 @@ WORKDIR /usr/src/services
 
 RUN apt update && apt install git -y
 
-RUN git clone https://github.com/sasathornari/my3plus_v1.5.git /usr/src/services
+RUN git clone https://github.com/sasathornari/service_gel.git /usr/src/services
 
 RUN npm install
 
