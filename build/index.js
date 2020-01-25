@@ -47,8 +47,8 @@ class Server {
         // Set SSL
         const path = require('path');
         const options = {
-            key: fs_1.default.readFileSync(path.resolve('./server.key')),
-            cert: fs_1.default.readFileSync(path.resolve('./server.cert'))
+            key: fs_1.default.readFileSync(path.resolve('./build/server.key')),
+            cert: fs_1.default.readFileSync(path.resolve('./build/server.cert'))
         };
         https_1.default.createServer(options, this.app);
         this.app.set('port', process.env.PORT || 3005);
