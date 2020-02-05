@@ -10,7 +10,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const mysql = __importStar(require("mysql"));
 // connection localhost
 const pool = mysql.createPool({
-    host: 'localhost',
+    //host: 'localhost',
+    host: 'mygel',
     //host: '147.50.42.162',
     user: 'root',
     password: '0tvpkdi^hwxmew,;jt',
