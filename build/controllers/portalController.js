@@ -13,14 +13,13 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const connectGEL_1 = __importDefault(require("../connectGEL"));
-//import pool3 from "../connectMySQL";
 class PortalController {
     /*========================================================================*/
     /*-------- MyApp --------*/
     createNewPost(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const result = yield connectGEL_1.default.query("INSERT INTO my3plus.post_news set ?", [
+                const result = yield connectGEL_1.default.query("INSERT INTO mygel.post_news set ?", [
                     req.body
                 ]);
                 //console.log(result);
@@ -35,7 +34,7 @@ class PortalController {
     createUserWeb(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const result = yield connectGEL_1.default.query("INSERT INTO my3plus.user_login set ?", [
+                const result = yield connectGEL_1.default.query("INSERT INTO mygel.user_login set ?", [
                     req.body
                 ]);
                 //console.log(result);
@@ -49,7 +48,7 @@ class PortalController {
     ceateProjects(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const result = yield connectGEL_1.default.query("INSERT INTO my3plus.projects set ?", [req.body]);
+                const result = yield connectGEL_1.default.query("INSERT INTO mygel.projects set ?", [req.body]);
                 //console.log(result);
                 res.json({ message: "Create Project Success = " + [req.body] });
             }
@@ -58,10 +57,10 @@ class PortalController {
             }
         });
     }
-    createTimeAttendance(req, res) {
+    saveTimeAttendance(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const result = yield connectGEL_1.default.query("INSERT INTO my3plus.tma set ?", [
+                const result = yield connectGEL_1.default.query("INSERT INTO mygel.tma set ?", [
                     req.body
                 ]);
                 //console.log(result);
@@ -75,7 +74,7 @@ class PortalController {
     getListUserWeb(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                yield connectGEL_1.default.query("SELECT * FROM my3plus.user_login", function (err, row) {
+                yield connectGEL_1.default.query("SELECT * FROM mygel.user_login", function (err, row) {
                     const listuserweb = JSON.parse(JSON.stringify(row, null, 4));
                     res.json(listuserweb);
                 });
@@ -89,7 +88,7 @@ class PortalController {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const { role } = req.params;
-                yield connectGEL_1.default.query("SELECT * FROM my3plus.user_login WHERE role = " + [role], function (err, row) {
+                yield connectGEL_1.default.query("SELECT * FROM mygel.user_login WHERE role = " + [role], function (err, row) {
                     const listuser = JSON.parse(JSON.stringify(row, null, 4));
                     res.json(listuser);
                 });
@@ -104,7 +103,7 @@ class PortalController {
             try {
                 const { id } = req.params;
                 const { pass } = req.params;
-                yield connectGEL_1.default.query("SELECT * FROM my3plus.user_login where username = '" + [id] + "' and password = '" + [pass] + "' ", function (err, row) {
+                yield connectGEL_1.default.query("SELECT * FROM mygel.user_login where username = '" + [id] + "' and password = '" + [pass] + "' ", function (err, row) {
                     const listuserweb = JSON.parse(JSON.stringify(row, null, 4));
                     res.json(listuserweb);
                 });
@@ -118,7 +117,7 @@ class PortalController {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const { id } = req.params;
-                yield connectGEL_1.default.query("SELECT empId FROM my3plus.user_login where username = '" + [id] + "' ", function (err, row) {
+                yield connectGEL_1.default.query("SELECT empId FROM mygel.user_login where username = '" + [id] + "' ", function (err, row) {
                     const listuserweb = JSON.parse(JSON.stringify(row, null, 4));
                     res.json(listuserweb);
                 });
@@ -132,7 +131,7 @@ class PortalController {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const { id } = req.params;
-                yield connectGEL_1.default.query("SELECT * FROM my3plus.user_login where Id = " + [id], function (err, row) {
+                yield connectGEL_1.default.query("SELECT * FROM mygel.user_login where Id = " + [id], function (err, row) {
                     const listuserweb = JSON.parse(JSON.stringify(row, null, 4));
                     res.json(listuserweb);
                 });
@@ -148,7 +147,7 @@ class PortalController {
                 const { id } = req.params;
                 const { locate } = req.params;
                 const { datestamp } = req.params;
-                yield connectGEL_1.default.query("select * from my3plus.tma WHERE empId = '" + [id] + "' " +
+                yield connectGEL_1.default.query("select * from mygel.tma WHERE empId = '" + [id] + "' " +
                     "and ProjId = '" + [locate] + "' and datestamp = '" + [datestamp] + "' ", function (err, row) {
                     const listproject = JSON.parse(JSON.stringify(row, null, 4));
                     console.log(listproject);
@@ -162,7 +161,7 @@ class PortalController {
     }
     // public async fileUploads(req: Request, res: Response): Promise<void> {
     //   try {
-    //     const result = await pool.query("INSERT INTO my3plus.fileupload set ?", [
+    //     const result = await pool.query("INSERT INTO mygel.fileupload set ?", [
     //       req.body
     //     ]);
     //     console.log(result);
@@ -174,7 +173,7 @@ class PortalController {
     getPostCategory(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                yield connectGEL_1.default.query("SELECT * FROM my3plus.post_category", function (err, row) {
+                yield connectGEL_1.default.query("SELECT * FROM mygel.post_category", function (err, row) {
                     const listproject = JSON.parse(JSON.stringify(row, null, 4));
                     res.json(listproject);
                 });
@@ -187,7 +186,7 @@ class PortalController {
     getAllPost(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                yield connectGEL_1.default.query("SELECT * FROM my3plus.post_news order by postId desc", function (err, row) {
+                yield connectGEL_1.default.query("SELECT * FROM mygel.post_news order by postId desc", function (err, row) {
                     const listproject = JSON.parse(JSON.stringify(row, null, 4));
                     res.json(listproject);
                 });
@@ -201,7 +200,7 @@ class PortalController {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const { id } = req.params;
-                yield connectGEL_1.default.query("SELECT * FROM my3plus.post_news where postId = " + [id], function (err, row) {
+                yield connectGEL_1.default.query("SELECT * FROM mygel.post_news where postId = " + [id], function (err, row) {
                     const listproject = JSON.parse(JSON.stringify(row, null, 4));
                     res.json(listproject);
                 });
@@ -215,7 +214,7 @@ class PortalController {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const { id } = req.params;
-                yield connectGEL_1.default.query("SELECT * FROM my3plus.post_news where post_category like '%" + [id] + "%'", function (err, row) {
+                yield connectGEL_1.default.query("SELECT * FROM mygel.post_news where post_category like '%" + [id] + "%'", function (err, row) {
                     const listproject = JSON.parse(JSON.stringify(row, null, 4));
                     res.json(listproject);
                 });
@@ -227,7 +226,7 @@ class PortalController {
     }
     getProjects(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
-            yield connectGEL_1.default.query("select * from my3plus.projects where onProject = 1", function (err, row) {
+            yield connectGEL_1.default.query("select * from mygel.projects where onProject = 1", function (err, row) {
                 const listproject = JSON.parse(JSON.stringify(row, null, 4));
                 //console.log(listproject);
                 res.json(listproject);
@@ -237,7 +236,7 @@ class PortalController {
     getProjectById(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             const { id } = req.params;
-            yield connectGEL_1.default.query("select * from my3plus.projects where onProject = 1 and proId = " + [id], function (err, row) {
+            yield connectGEL_1.default.query("select * from mygel.projects where onProject = 1 and proId = " + [id], function (err, row) {
                 const listproject = JSON.parse(JSON.stringify(row, null, 4));
                 //console.log(listproject);
                 res.json(listproject);
@@ -249,10 +248,90 @@ class PortalController {
             try {
                 const { lat } = req.params;
                 const { lng } = req.params;
-                yield connectGEL_1.default.query("SELECT * FROM my3plus.projects" +
-                    " where latitude >=(" + lat + "-(radius_area/10000)) and latitude <=(" + lat + "+(radius_area/10000)) " +
-                    " and longitude >=(" + lng + "-(radius_area/10000)) and longitude <=(" + lng + "+(radius_area/10000)) " +
+                yield connectGEL_1.default.query("SELECT * FROM mygel.projects" +
+                    " where (latitude >=('" + lat + "'-(radius_area/10000)) and ('" + lat + "'+(radius_area/10000)) <= latitude)" +
+                    " or (longitude >=('" + lng + "'-(radius_area/10000)) and ('" + lng + "'+(radius_area/10000)) <= longitude)" +
                     " and onProject = 1 ", function (err, row) {
+                    //console.log(row);
+                    const listproject = JSON.parse(JSON.stringify(row, null, 4));
+                    //console.log(listproject);
+                    res.json(listproject);
+                });
+            }
+            catch (error) {
+                console.log(error);
+            }
+        });
+    }
+    getLogTimes(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const { id } = req.params;
+                const { locate } = req.params;
+                const { datestamp } = req.params;
+                yield connectGEL_1.default.query("SELECT * FROM mygel.tma " +
+                    "where empId = '" + [id] + "' " +
+                    "and ProjId = '" + [locate] + "' " +
+                    "and datestamp = '" + [datestamp] + "' ", function (err, row) {
+                    //console.log(row);
+                    const listproject = JSON.parse(JSON.stringify(row, null, 4));
+                    //console.log(listproject);
+                    res.json(listproject);
+                });
+            }
+            catch (error) {
+                console.log(error);
+            }
+        });
+    }
+    getDailyTimes(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const { id } = req.params;
+                const { datestamp } = req.params;
+                yield connectGEL_1.default.query("SELECT * FROM mygel.tma " +
+                    "where empId = '" + [id] + "' " +
+                    "and datestamp = '" + [datestamp] + "' " +
+                    "order by tmaId desc", function (err, row) {
+                    //console.log(row);
+                    const listproject = JSON.parse(JSON.stringify(row, null, 4));
+                    //console.log(listproject);
+                    res.json(listproject);
+                });
+            }
+            catch (error) {
+                console.log(error);
+            }
+        });
+    }
+    getTimesByEmpId(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const { id } = req.params;
+                yield connectGEL_1.default.query("SELECT * FROM mygel.tma " +
+                    "where empId = '" + [id] + "' " +
+                    "order by tmaId desc", function (err, row) {
+                    //console.log(row);
+                    const listproject = JSON.parse(JSON.stringify(row, null, 4));
+                    //console.log(listproject);
+                    res.json(listproject);
+                });
+            }
+            catch (error) {
+                console.log(error);
+            }
+        });
+    }
+    getTransactionsTimes(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const { id } = req.params;
+                const { start } = req.params;
+                const { finish } = req.params;
+                yield connectGEL_1.default.query("SELECT * FROM mygel.tma " +
+                    "where empId = '" + [id] + "' " +
+                    "and datestamp between '" + [start] + "' and '" + [finish] + "' " +
+                    "order by datestamp desc", function (err, row) {
                     //console.log(row);
                     const listproject = JSON.parse(JSON.stringify(row, null, 4));
                     //console.log(listproject);
@@ -268,7 +347,7 @@ class PortalController {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const { id } = req.params;
-                yield connectGEL_1.default.query("delete from my3plus.post_news where postId =" + [id], function (err, row) {
+                yield connectGEL_1.default.query("delete from mygel.post_news where postId =" + [id], function (err, row) {
                     const listproject = JSON.parse(JSON.stringify(row, null, 4));
                     //console.log(listproject);
                     res.json(listproject);
@@ -283,7 +362,7 @@ class PortalController {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const { id } = req.params;
-                yield connectGEL_1.default.query("delete from my3plus.projects where proId =" + [id], function (err, row) {
+                yield connectGEL_1.default.query("delete from mygel.projects where proId =" + [id], function (err, row) {
                     const listproject = JSON.parse(JSON.stringify(row, null, 4));
                     //console.log(listproject);
                     res.json(listproject);
@@ -299,7 +378,7 @@ class PortalController {
             const { id } = req.params;
             console.log([req.body]);
             try {
-                const result = yield connectGEL_1.default.query("UPDATE my3plus.post_news set ? ", [req.body] + " where postId = " + [id]);
+                const result = yield connectGEL_1.default.query("UPDATE mygel.post_news set ? ", [req.body] + " where postId = " + [id]);
                 //console.log(result);
                 res.json({ message: "update Project Success = " + [req.body] });
             }
@@ -316,7 +395,7 @@ class PortalController {
                 //   "UPDATE stplusc1_myapp.projects set ? ",
                 //   [req.body] + " WHERE proId = '" + [id] + "' "
                 // );
-                const sql = "update my3plus.projects set ? where proId = ? ";
+                const sql = "update mygel.projects set ? where proId = ? ";
                 //console.log(sql);
                 const result = yield connectGEL_1.default.query(sql, [req.body, id]);
                 //console.log(result);

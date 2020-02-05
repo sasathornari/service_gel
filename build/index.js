@@ -11,8 +11,7 @@ const fs_1 = __importDefault(require("fs"));
 const body_parser_1 = __importDefault(require("body-parser"));
 const indexRoutes_1 = __importDefault(require("./routes/indexRoutes"));
 const portalRoutes_1 = __importDefault(require("./routes/portalRoutes"));
-const projectRoutes_1 = __importDefault(require("./routes/projectRoutes"));
-const uploadRoutes_1 = __importDefault(require("./routes/uploadRoutes"));
+const console_1 = require("console");
 class Server {
     constructor() {
         this.app = express_1.default();
@@ -23,8 +22,8 @@ class Server {
         const allowedOrigins = [
             'capacitor://localhost',
             'ionic://localhost',
-            'http://localhost',
-            'http://localhost:8080',
+            'https://localhost',
+            'https://localhost:8080',
             'http://localhost:8100',
             'http://localhost:8000',
             'http://localhost:53703',
@@ -47,11 +46,13 @@ class Server {
         // Set SSL
         const path = require('path');
         const options = {
-            key: fs_1.default.readFileSync(path.resolve('./build/server.key')),
-            cert: fs_1.default.readFileSync(path.resolve('./build/server.cert'))
+            key: fs_1.default.readFileSync(path.resolve('./privkey.pem')),
+            cert: fs_1.default.readFileSync(path.resolve('./cert.pem'))
         };
-        https_1.default.createServer(options, this.app);
-        this.app.set('port', process.env.PORT || 3005);
+        https_1.default.createServer(options, this.app).listen(3005, function () {
+            console.log("server running at https://IP_ADDRESS:3005/");
+        });
+        //this.app.set('port', process.env.PORT || 3000);
         this.app.use(morgan_1.default('dev'));
         this.app.options('*', cors_1.default(corsOptions));
         //this.app.use(cors());
@@ -65,20 +66,36 @@ class Server {
             res.setHeader("Access-Control-Allow-Headers", "Content-Type");
             res.setHeader('Content-type', 'application/json');
             res.setHeader('Accept', 'application/json, text/plain');
+            const apiTimeout = 10 * 1000;
+            req.setTimeout(apiTimeout, function () {
+                console.log('Request has timed out.');
+                res.send(408);
+            });
+            res.setTimeout(apiTimeout, function () {
+                console.log('Service Unavailable.');
+                res.send(503);
+            });
             next();
         });
+        //  this.app.get('/api', (req, res) => {
+        //     res.send('CONNECTION REST SERVICES GEL API');
+        //   })
     }
     routes() {
         this.app.use('/api', indexRoutes_1.default);
         this.app.use('/api/portal', portalRoutes_1.default);
-        this.app.use('/api/project', projectRoutes_1.default);
-        this.app.use('/api/upload', uploadRoutes_1.default);
+        //this.app.use('/api/project', projectRoutes);
+        // this.app.use('/api/upload', uploadRoutes);
     }
     start() {
         this.app.listen(this.app.get('port'), () => {
             console.log('Server on port ', this.app.get('port'));
             console.log('Start connection.........\n');
         });
+        if (console_1.error) {
+            console.error('error connecting: ' + console_1.error.toString);
+            return;
+        }
     }
 }
 const server = new Server();

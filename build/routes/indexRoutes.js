@@ -11,6 +11,7 @@ class IndexRoutes {
         this.config();
     }
     config() {
+        //
         // GET DATA EMPLOYEE
         this.router.get('/emp', indexController_1.default.listAllEmployees);
         this.router.get('/emp/:id', indexController_1.default.getEmpId);

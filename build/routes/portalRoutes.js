@@ -16,7 +16,7 @@ class PortalRoutes {
         //this.router.post('/fileupload', portalController.fileUploads);
         this.router.post('/web/user', portalController_1.default.createUserWeb);
         this.router.post('/project/create', portalController_1.default.ceateProjects);
-        this.router.post('/tma', portalController_1.default.createTimeAttendance);
+        this.router.post('/tma/savetime', portalController_1.default.saveTimeAttendance);
         // READ DATA PORTAL INTRANET OF GEL        
         this.router.get('/web/listuser', portalController_1.default.getListUserWeb);
         this.router.get('/web/role/:role', portalController_1.default.getUserLoginByRole);
@@ -31,6 +31,10 @@ class PortalRoutes {
         this.router.get('/project/proId/:id', portalController_1.default.getProjectById);
         this.router.get('/project/history/:id,:locate,:datestamp', portalController_1.default.findHistoryTMAById);
         this.router.get('/project/location/:lat,:lng', portalController_1.default.getLocationInProject);
+        this.router.get('/tma/logtimes/:id,:locate,:datestamp', portalController_1.default.getLogTimes);
+        this.router.get('/tma/daily/:id,:datestamp', portalController_1.default.getDailyTimes);
+        this.router.get('/tma/empId/:id', portalController_1.default.getTimesByEmpId);
+        this.router.get('/tma/transactions/:id,:start,:finish', portalController_1.default.getTransactionsTimes);
         // UPDATE DATA
         this.router.put('/post-update/:id', portalController_1.default.updatePost);
         this.router.put('/project/app/:id', portalController_1.default.updateProjectInApp);
